@@ -5,7 +5,7 @@ XYZ
 XYZ
 **How To Run Access To Services**
 1. Ensure you have QGIS installed and either cloned or downloaded this repo so that you have the following files available:
-    - **GTFS Data:**
+    - **GTFS Data (this is the data for the bus timetables, so accurate journey times can be calculated using bus timings)**
    - W_bus_clipped
    - WM_bus_clipped
    - SW_bus_clipped
