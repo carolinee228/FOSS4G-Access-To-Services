@@ -22,6 +22,13 @@ XYZ
    - shortest_destination.py (This will keep only one origin per destination based on the shortest travel time)
    - gdf_to_qgslayer.py (converts the merged GDF to a QGIS layer)
 
+2. Open OSGeo4W Shell and paste: `python3 -m ensurepip --upgrade`
+3. Then, enter `python3 -m pip install --upgrade pip`
+4. Then, enter `python3 -m pip install pandas shapely pyproj fiona geopandas`
+5. Then finally, enter `python3 -m pip install r5py`. These steps will install r5py to your local machine
+
+
+
 2. In QGIS, open a blank project. Along the top bar, go to Plugins > Python Console. This will open the Python Console at the bottom of the screen
 3. At the top of the Python Console, open the Editor. There should be an icon to 'Show Editor' which will open the Python Editor on the right of the screen
 4. In the Editor, you can now open the four Python files from the repo. You can do this by going to the Editor and finding the icon for 'Open Script'. They will then open in the Editor as separate files
