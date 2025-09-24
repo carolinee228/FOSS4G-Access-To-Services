@@ -33,70 +33,59 @@ Our analysis library (`r5py`) requires a portable, 64-bit version of JDK 21.
 4.  Create a new folder named `jdk` inside your main workshop folder.
 5.  Extract the contents of the downloaded archive into this new `jdk` folder.
 
-### Step 3: Install Required Python Packages
+### Step 3: Configure Environment and Launch QGIS
 
-QGIS comes with its own Python environment. We need to install our required libraries into it.
+This is the final setup step. We will open a terminal, install the necessary Python packages, temporarily tell the terminal where to find our portable Java, and then launch QGIS from that same session.
 
 ---
 
 #### **For Windows Users**
 
+For Windows, we will perform all the remaining setup steps in a single terminal window.
+
 1.  From the Start Menu, find and open the **"OSGeo4W Shell"**.
-2.  In the terminal window, run the following command:
+2.  **Install Python Packages:** In the terminal window that opens, run the following command to install the required libraries into QGIS's Python environment.
     ```batch
     python-qgis-ltr -m pip install r5py geopandas JPype1==1.5.0 "numpy<2"
     ```
-3.  Wait for the installation to complete, then you can close the OSGeo4W shell.
-
----
-
-#### **For macOS and Linux Users**
-
-1.  Open a new standard **Terminal**.
-2.  Run the following command:
-    ```bash
-    pip3 install r5py geopandas JPype1==1.5.0 "numpy<2"
-    ```
-3.  Wait for the installation to complete.
-
----
-
-### Step 4: Launch QGIS from a Pre-configured Terminal
-
-This is the most important step for the analysis. We will open a terminal, navigate to our workshop folder, temporarily tell it where to find our portable Java, and then launch QGIS from that same session.
-
-#### **For Windows Users**
-
-1.  **Open a Command Prompt.** (Start Menu -> `cmd`).
-2.  **Navigate to your workshop folder.**
+3.  **Navigate to your workshop folder.** After the installation completes, use the `cd` command.
     ```batch
     cd C:\Users\YourUser\FOSS4G_Workshop
     ```
-3.  **Set the `JAVA_HOME` variable.** **Note: The version number in the path below might be slightly different for you.**
+4.  **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created. It is only active for this specific terminal window. **Note: The version number in the path below might be slightly different for you.**
     ```batch
     set "JAVA_HOME=%cd%\jdk\jdk-21.0.2+13"
     ```
-4.  **Launch QGIS.**
+5.  **Launch QGIS.** **Note: You may need to adjust the path below to match your QGIS installation version.**
     ```batch
     qgis-ltr
     ```
 
+---
+
 #### **For macOS and Linux Users**
 
-1.  **Open a new Terminal.**
-2.  **Navigate to your workshop folder.**
+For macOS and Linux, the setup is a two-stage process.
+
+1.  **Install Python Packages:** Open a new standard **Terminal** and run the following command. `pip3` is typically linked to the Python installation that QGIS uses.
     ```bash
-    cd /home/user/foss4g_workshop
+    pip3 install r5py geopandas JPype1==1.5.0 "numpy<2"
     ```
-3.  **Set the `JAVA_HOME` variable.** **Note: The exact folder name inside `jdk/` may vary slightly.**
-    ```bash
-    export JAVA_HOME="$PWD/jdk/temurin-21.jdk/Contents/Home"
-    ```
-4.  **Launch QGIS.**
-    * **macOS**: `open /Applications/QGIS.app`
-    * **Linux**: `qgis`
+2.  **Configure and Launch:** After the installation is complete, close that terminal. Now, open a **new Terminal** for the analysis session and run the following commands.
+    * First, navigate to your workshop folder:
+        ```bash
+        cd /home/user/foss4g_workshop
+        ```
+    * Next, set the temporary `JAVA_HOME` variable. **Note: The exact folder name inside `jdk/` may vary slightly.**
+        ```bash
+        export JAVA_HOME="$PWD/jdk/temurin-21.jdk/Contents/Home"
+        ```
+    * Finally, launch QGIS from the same terminal:
+        * **macOS**: `open /Applications/QGIS.app`
+        * **Linux**: `qgis`
 
 ---
+
 
 ## 💡 Workshop Steps: Interactive Analysis
 
