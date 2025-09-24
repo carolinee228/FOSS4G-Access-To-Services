@@ -58,7 +58,7 @@ For Windows, we will perform all the remaining setup steps in a single terminal 
     ```
 5.  **Launch QGIS.** **Note: You may need to adjust the path below to match your QGIS installation version.**
     ```batch
-    qgis-ltr
+    qgis-ltr travel_time_workshop.qgz
     ```
 
 ---
@@ -81,8 +81,8 @@ For macOS and Linux, the setup is a two-stage process.
         export JAVA_HOME="$PWD/jdk/temurin-21.jdk/Contents/Home"
         ```
     * Finally, launch QGIS from the same terminal:
-        * **macOS**: `open /Applications/QGIS.app`
-        * **Linux**: `qgis`
+        * **macOS**: `open /Applications/QGIS.app travel_time_workshop.qgz`
+        * **Linux**: `qgis travel_time_workshop.qgz`
 
 ---
 
@@ -215,7 +215,7 @@ The core of the analysis happens in the `get_travel_time_matrix` function.
 
 1.  In the QGIS Browser panel, navigate to your project folder, then into the `scripts` subfolder.
 2.  Drag the `travel_time_analysis.py` file into the QGIS Python Editor window.
-3.  Try changing some of the parameters inside the `r5py.TravelTimeMatrix` call (e.g., `max_time`, `departure_time`, `speed_walking`).
+3.  Try changing some of the parameters inside the `r5py.TravelTimeMatrix` call (e.g., `max_time`, `departure_time`, `speed_walking`). For full details on the parameters available, see the [r5py docs](https://r5py.readthedocs.io/stable/reference/reference.html#r5py.TravelTimeMatrix)
 4.  Click the "Run Script" button in the editor to save the changes to memory.
 5.  Now, re-run Step 5 from the main workshop guide above to see how your results change.
 
