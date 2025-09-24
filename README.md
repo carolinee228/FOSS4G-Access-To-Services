@@ -87,11 +87,11 @@ This is the most important step for the analysis. We will open a terminal, navig
     ```
 3.  **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created. It is only active for this specific command prompt window. **Note: The version number in the path below might be slightly different for you.**
     ```batch
-    set "JAVA_HOME=%cd%\jdk\jdk-21.0.2+13"
+    set "JAVA_HOME=%cd%\jdk\jdk-21.0.8+9"
     ```
 4.  **Launch QGIS from the same command prompt.** **Note: You may need to adjust the path below to match your QGIS installation version.**
     ```batch
-    start "" "C:\Program Files\QGIS 3.34.8\bin\qgis-bin.exe"
+    start "" "C:\Program Files\QGIS 3.40.11\bin\qgis-ltr-bin.exe"
     ```
 
 #### **For macOS and Linux Users**
