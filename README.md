@@ -119,7 +119,7 @@ This is the most important step for the analysis. We will open a terminal, navig
 
 ## 💡 Workshop Steps: Interactive Analysis
 
-After completing the setup, launch QGIS from your configured terminal and open the Python Console (**Plugins -> Python Console**). You will now run each of the following code blocks one by one.
+After completing the setup, launch QGIS from your configured terminal and open the Python Console (**Plugins -> Python Console**). You will now run each of the following code blocks one by one. You can do this by pasting directly into the python console, or clicking the **Show editor** button, pasting into the editor panel, then clicking the **Run Script** button.
 
 ### Step 1: Set Up the Environment
 
@@ -166,8 +166,6 @@ print("Tools imported.")
 
 ```python
 # --- Step 3.1: Load Origin Layer ---
-print("\n--- Step 3: Loading data ---")
-print("ACTION: Loading the selected ORIGINS layer...")
 origins = active_layer_to_gdf()
 ```
 
@@ -176,7 +174,6 @@ origins = active_layer_to_gdf()
 
 ```python
 # --- Step 3.2: Load Destination Layer ---
-print("\nACTION: Loading the selected DESTINATIONS layer...")
 destinations = active_layer_to_gdf()
 ```
 
