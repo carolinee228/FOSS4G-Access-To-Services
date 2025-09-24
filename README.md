@@ -152,6 +152,7 @@ print(f"Environment is ready. Project root set to: {project_root}")
 # --- Step 2: Import Necessary Functions ---
 print("\n--- Step 2: Importing tools ---")
 import geopandas as gpd
+import pandas as pd
 from single_core_ttm import single_core_ttm
 from workshop_utils import active_layer_to_gdf, add_gdf_to_qgis
 print("Tools imported.")
@@ -215,11 +216,24 @@ results_gdf = destinations.merge(
 print("Join complete.")
 ```
 
-### Step 7: Add the Final Layer to QGIS
+### Step 7: Handle Unreachable Destinations
+
+After the join, any destination that could not be reached will have a null (`NaN`) value for `travel_time`. For styling purposes, let's replace these nulls with our maximum travel time of 90 minutes.
 
 ```python
-# --- Step 7: Add the Final Layer to QGIS ---
-print("\n--- Step 7: Adding results to the QGIS map ---")
+# --- Step 7: Handle Unreachable Destinations ---
+print("\n--- Step 7: Setting travel time for unreachable destinations ---")
+results_gdf['travel_time'] = results_gdf['travel_time'].fillna(90)
+print("Unreachable destinations handled.")
+```
+
+### Step 8: Add the Final Layer to QGIS
+
+The final step! This code will add our GeoDataFrame containing the results as a new layer in your QGIS project, ready for styling and interpretation.
+
+```python
+# --- Step 8: Add the Final Layer to QGIS ---
+print("\n--- Step 8: Adding results to the QGIS map ---")
 add_gdf_to_qgis(results_gdf, "outbound_accessibility_results")
 print("\nWorkshop complete! A new layer has been added to your project.")
 ```
