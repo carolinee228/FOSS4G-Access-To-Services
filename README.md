@@ -15,7 +15,7 @@ Before you begin, you must have the following software:
 
 ---
 
-## 🚀 Setup Instructions (Crucial!)
+## 🚀 Setup Instructions
 
 This setup ensures QGIS can find the correct Java version and Python packages **without requiring admin rights or permanently changing your system settings**.
 
