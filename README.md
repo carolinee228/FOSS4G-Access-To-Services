@@ -19,7 +19,7 @@ Before you begin, you must have the following software:
 
 ## 🚀 Setup Instructions (Crucial!)
 
-This setup ensures QGIS can find the correct Java version **without requiring admin rights or permanently changing your system settings**.
+This setup ensures QGIS can find the correct Java version and Python packages **without requiring admin rights or permanently changing your system settings**.
 
 ### Step 1: Download the Workshop Files
 
@@ -46,11 +46,37 @@ Our analysis library (`r5py`) requires a portable, 64-bit version of JDK 21.
     └── ...
     ```
 
-### Step 3: Launch QGIS from a Pre-configured Terminal
+### Step 3: Install Required Python Packages
 
-This is the most important step. We will open a terminal, temporarily tell it where to find our portable Java, and then launch QGIS from that same session.
+QGIS comes with its own Python environment. We need to install our required libraries into it. This step also pins the `NumPy` library to an older version to ensure compatibility.
 
 ---
+
+#### **For Windows Users**
+
+1.  From the Start Menu, find and open the **"OSGeo4W Shell"**.
+2.  In the black terminal window that opens, run the following command. This will install the correct versions of all the required libraries.
+    ```batch
+    python-qgis-ltr -m pip install r5py geopandas JPype1==1.5.0 "numpy<2"
+    ```
+3.  Wait for the installation to complete, then you can close the OSGeo4W shell.
+
+---
+
+#### **For macOS and Linux Users**
+
+1.  Open a new standard **Terminal**.
+2.  Run the following command. `pip3` is typically linked to the Python installation that QGIS uses.
+    ```bash
+    pip3 install r5py geopandas JPype1==1.5.0 "numpy<2"
+    ```
+3.  Wait for the installation to complete.
+
+---
+
+### Step 4: Launch QGIS from a Pre-configured Terminal
+
+This is the most important step for the analysis. We will open a terminal, navigate to our workshop folder, temporarily tell it where to find our portable Java, and then launch QGIS from that same session.
 
 #### **For Windows Users**
 
@@ -59,16 +85,14 @@ This is the most important step. We will open a terminal, temporarily tell it wh
     ```batch
     cd C:\Users\YourUser\FOSS4G_Workshop
     ```
-3.  **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created. It is only active for this specific command prompt window.
+3.  **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created. It is only active for this specific command prompt window. **Note: The version number in the path below might be slightly different for you.**
     ```batch
     set "JAVA_HOME=%cd%\jdk\jdk-21.0.2+13"
     ```
-4.  **Launch QGIS from the same command prompt.** (You may need to adjust the path if your QGIS is installed elsewhere).
+4.  **Launch QGIS from the same command prompt.** **Note: You may need to adjust the path below to match your QGIS installation version.**
     ```batch
     start "" "C:\Program Files\QGIS 3.34.8\bin\qgis-bin.exe"
     ```
-
----
 
 #### **For macOS and Linux Users**
 
@@ -77,7 +101,7 @@ This is the most important step. We will open a terminal, temporarily tell it wh
     ```bash
     cd /home/user/foss4g_workshop
     ```
-3.  **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created and is only active for this terminal session. Note the folder name inside may vary slightly.
+3.  **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created and is only active for this terminal session. **Note: The exact folder name inside `jdk/` may vary slightly.**
     ```bash
     export JAVA_HOME="$PWD/jdk/temurin-21.jdk/Contents/Home"
     ```
@@ -99,7 +123,7 @@ After completing the setup, launch QGIS from your configured terminal and open t
 
 ### Step 1: Set Up the Environment
 
-This step identifies your workshop folder and tells Python where to find your scripts.
+This step identifies your workshop folder (because you launched QGIS from there) and tells Python where to find your scripts.
 
 ```python
 # --- Step 1: Set up the Environment ---
@@ -112,7 +136,7 @@ project_root = Path.cwd()
 
 # This is a good practice check to ensure the path is correct
 if not (project_root / 'scripts').exists():
-    raise FileNotFoundError(f"Could not find the 'scripts' subfolder. Is the project root correct? Path: {project_root}")
+    raise FileNotFoundError(f"Could not find the 'scripts' subfolder. Did you launch QGIS from the correct directory? Current Path: {project_root}")
 
 # Add the scripts folder to Python's path
 scripts_path = project_root / 'scripts'
@@ -123,31 +147,41 @@ print(f"Environment is ready. Project root set to: {project_root}")
 ```
 
 ### Step 2: Import Necessary Functions
-(This step remains the same)
+
 ```python
 # --- Step 2: Import Necessary Functions ---
 print("\n--- Step 2: Importing tools ---")
 import geopandas as gpd
+import pandas as pd
 from single_core_ttm import single_core_ttm
 from workshop_utils import active_layer_to_gdf, add_gdf_to_qgis
 print("Tools imported.")
 ```
 
 ### Step 3: Load Origin and Destination Layers
-(This step remains the same)
+
+1.  **Load Data**: Add the `clipped_residential_properties.gpkg` and `clipped_gpmainsites.gpkg` files to QGIS from your workshop folder.
+2.  **Select Origins**: Select the `clipped_residential_properties` layer in the Layers Panel.
+3.  **Run Code**:
+
 ```python
 # --- Step 3.1: Load Origin Layer ---
 print("\n--- Step 3: Loading data ---")
-print("ACTION: Add data to QGIS, then select the ORIGINS layer and run this.")
+print("ACTION: Loading the selected ORIGINS layer...")
 origins = active_layer_to_gdf()
+```
 
+4.  **Select Destinations**: Select the `clipped_gpmainsites` layer in the Layers Panel.
+5.  **Run Code**:
+
+```python
 # --- Step 3.2: Load Destination Layer ---
-print("\nACTION: Now select the DESTINATIONS layer and run this.")
+print("\nACTION: Loading the selected DESTINATIONS layer...")
 destinations = active_layer_to_gdf()
 ```
 
 ### Step 4: Run the Travel Time Analysis
-(This step and all subsequent steps remain the same)
+
 ```python
 # --- Step 4: Run the Travel Time Analysis ---
 print("\n--- Step 4: Calculating travel times (this may take a moment)... ---")
@@ -159,8 +193,6 @@ print(travel_time_df.head())
 
 ### Step 5: Find the Quickest Route to Each Destination
 
-We are only interested in the *fastest* route to each unique destination.
-
 ```python
 # --- Step 5: Find the Quickest Route to Each Destination ---
 print("\n--- Step 5: Filtering for the quickest route to each destination ---")
@@ -171,8 +203,6 @@ print(shortest_tt.head())
 ```
 
 ### Step 6: Join Results Back to Destination Geometries
-
-Let's join our results back to the original destination points so we can visualize them.
 
 ```python
 # --- Step 6: Join Results Back to Destination Geometries ---
@@ -186,13 +216,24 @@ results_gdf = destinations.merge(
 print("Join complete.")
 ```
 
-### Step 7: Add the Final Layer to QGIS
+### Step 7: Handle Unreachable Destinations
 
-This code will add our results as a new layer in your QGIS project.
+After the join, any destination that could not be reached will have a null (`NaN`) value for `travel_time`. For styling purposes, let's replace these nulls with our maximum travel time of 90 minutes.
 
 ```python
-# --- Step 7: Add the Final Layer to QGIS ---
-print("\n--- Step 7: Adding results to the QGIS map ---")
+# --- Step 7: Handle Unreachable Destinations ---
+print("\n--- Step 7: Setting travel time for unreachable destinations ---")
+results_gdf['travel_time'] = results_gdf['travel_time'].fillna(90)
+print("Unreachable destinations handled.")
+```
+
+### Step 8: Add the Final Layer to QGIS
+
+The final step! This code will add our GeoDataFrame containing the results as a new layer in your QGIS project, ready for styling and interpretation.
+
+```python
+# --- Step 8: Add the Final Layer to QGIS ---
+print("\n--- Step 8: Adding results to the QGIS map ---")
 add_gdf_to_qgis(results_gdf, "outbound_accessibility_results")
 print("\nWorkshop complete! A new layer has been added to your project.")
 ```
@@ -201,4 +242,4 @@ print("\nWorkshop complete! A new layer has been added to your project.")
 
 ## 🗺️ Exploring Further
 
-Congratulations! You can now use QGIS's styling tools to symbolize the `outbound_accessibility_results` layer based on the `travel_time` attribute to create a powerful accessibility map.
+Congratulations! You've successfully completed the analysis. You can now use QGIS's styling tools to symbolize the `outbound_accessibility_results` layer based on the `travel_time` attribute to create a powerful accessibility map.
