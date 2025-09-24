@@ -1,43 +1,204 @@
-# FOSS4G-Access-To-Services
+# FOSS4G Workshop: Public Transport Accessibility Analysis in QGIS
+
 **Workshop Overview**
-XYZ 
-**Pre-Requisites / To Do Beforehand**
-XYZ
-**How To Run Access To Services**
-1. Ensure you have QGIS installed and either cloned or downloaded this repo so that you have the following files available:
-    - **GTFS Data (this is the data for the bus timetables, so accurate journey times can be calculated using bus timings)**
-   - W_bus_clipped
-   - WM_bus_clipped
-   - SW_bus_clipped
-   - NW_bus_clipped
-   - **OSM PBF file (binary format used to store data from OpenStreetMap (OSM))**
-   - clipped.osm.pbf
-   - **Origin Points File**
-   - clipped_gpmainsites.gpkg
-   - **Destination Points File**
-   - clipped_residential_properties.gpkg
-   - **Python Files to Run Access To Services**
-   - active_layer.py (This allows users to set the origin and destination files in QGIS based on which layer is selected in the Table of Contents)
-   - single_core_ttm.py (This is the Travel Time Analysis using r5py. This will calculate travel times between origins and destinations)
-   - shortest_destination.py (This will keep only one origin per destination based on the shortest travel time)
-   - gdf_to_qgslayer.py (converts the merged GDF to a QGIS layer)
 
-2. Open OSGeo4W Shell and paste: `python3 -m ensurepip --upgrade`
-3. Then, enter `python3 -m pip install --upgrade pip`
-4. Then, enter `python3 -m pip install pandas shapely pyproj fiona geopandas`
-5. Then finally, enter `python3 -m pip install r5py`. These steps will install r5py to your local machine
+Welcome! This workshop will guide you through performing a public transport accessibility analysis using Python inside QGIS. We will calculate the travel time from a set of origins to a set of destinations using open-source tools and data.
 
+The analysis will be conducted interactively within the QGIS Python Console to help you understand each step of the process.
 
+---
 
-2. In QGIS, open a blank project. Along the top bar, go to Plugins > Python Console. This will open the Python Console at the bottom of the screen
-3. At the top of the Python Console, open the Editor. There should be an icon to 'Show Editor' which will open the Python Editor on the right of the screen
-4. In the Editor, you can now open the four Python files from the repo. You can do this by going to the Editor and finding the icon for 'Open Script'. They will then open in the Editor as separate files
-5. Now, import the Origin and Destination files into the Table of Contents in QGIS. From the Repo, make sure clipped_gpmainsites.gpkg and clipped_residential_properties.gpkg are present, these will be the origin and destination points respectfully
-6. This may be a good time to add a basemap in as well. In the Browser, scroll down to XYZ Tiles and find OpenStreetMap. You can right-click this layer to Add Layer to Project
-7. Now, we want to set the Origin points for Python to use. In the Table of Contents, click on the clipped_gpmainsites.gpkg layer so that it is selected. Then, in the Editor, ensure you open the active_layer.py file and click the icon to 'Run Script'. Next, in the actual Python Console, run the following command `origins = active_layer_to_gdf(iface)`. This should now set the Origins. You can double check origins have been set by just typing `origins` into the Python Console > Enter and check results appear as expected
-8. Now, we want to set the Destination points for Python to use. In the Table of Contents, click on the clipped_residential_properties.gpkg layer so that it is selected. This is really important that this new layer is now selected. Then, in the Editor, ensure you open the active_layer.py file and click the icon to 'Run Script'. Next, in the actual Python Console, run the following command `destinations = active_layer_to_gdf(iface)`. This should now set the Destinations. You can double check destinations have been set by just typing `destinations` into the Python Console > Enter and check results appear as expected
-9. Next, we are going to calculate the travel times between the origin and destination points. In the Editor, open the single_core_ttm.py file and 'Run Script'. We can then call the function and calculate the travel times by going back to the Python Console and typing `single_core_ttm(origins,destinations)`. This should return values for where the routing came from, and where the routing went to, and the time in minutes for this to occur. NOTE - FOR TESTING, YOU WILL NEED TO CHANGE THE SCRIPT IN THE EDITOR. AT THE MOMENT, THE OSM PBF FILE PATH AND THE GTFS FILE PATH ARE HARDCODED AND WILL NOT WORK ON OTHER MACHINES, ENSURE TO CHANGE THIS FILE PATH IN THE EDITOR FOR THIS SINGLE_CORE_TTM SCRIPT TO POINT TO WHERE YOU HAVE DOWNLOADED THE OSM PBF FILE AND GTFS FILES
-10. Next, we want to ensure that we only keep the shortest origin point per destination. In this example of GPs, we only want to keep the GP that is closest to any given house as this would be the GP they would frequent. To do this, in the console, you can run `shortest_tt = tt.sort_values("travel_time").drop_duplicates("to_id")`. To inspect the results, in the console, type and then enter `shortest_tt`
-11. We then need to merge the geometry from the original destinations layer back on to the travel times, as the result from our calculation is non-spatial. In the Console, we can run the following `merged = destinations.merge(shortest_tt[["travel_time","to_id"]],left_on="id", right_on="to_id",how="left").drop(columns=["to_id"])`. As before, you can view the results in the Console by typing and entering `merged`
-12. We would then like to display our results on the map. In the Editor, navigate to the gdf_to_qgslayer.py and Run Script. Next, back in the Console, enter `add_gdf_to_qgis(merged, "outbound_results")`. This will add the results to the map as a layer in the Table of Contents called 'Outbound Results'.
+## Prerequisites
 
+Before you begin, you must have the following software:
+
+1.  **QGIS (version 3.28 or newer)**: If you do not have it, download it from [qgis.org](https://qgis.org/en/site/forusers/download.html).
+2.  **This GitHub Repository**: You need all the data and script files.
+
+---
+
+## 🚀 Setup Instructions (Crucial!)
+
+This setup ensures QGIS can find the correct Java version **without requiring admin rights or permanently changing your system settings**.
+
+### Step 1: Download the Workshop Files
+
+If you haven't already, download this repository as a ZIP file and extract it to a simple, memorable path with **no spaces**, for example: `C:\Users\YourUser\FOSS4G_Workshop\` or `/home/user/foss4g_workshop/`.
+
+### Step 2: Download and Place the Portable JDK (Java 21)
+
+Our analysis library (`r5py`) requires a portable, 64-bit version of JDK 21.
+
+1.  Go to the download page: [**Eclipse Temurin JDK 21 Downloads**](https://adoptium.net/temurin/releases/?version=21)
+2.  On the download page, find your Operating System (Windows, macOS, Linux).
+3.  Crucially, download the **Archive** file, which will be a `.zip` or `.tar.gz`. **Do NOT download the installer (`.msi` or `.pkg`).** 
+4.  Create a new folder named `jdk` inside your main workshop folder.
+5.  Extract the contents of the downloaded archive into this new `jdk` folder. Your file structure should now look like this:
+    ```
+    FOSS4G_Workshop/
+    ├── jdk/
+    │   └── jdk-21.0.2+13/  <-- (or similar versioned folder)
+    │       ├── bin/
+    │       ├── conf/
+    │       └── ...
+    ├── network_data/
+    ├── scripts/
+    └── ...
+    ```
+
+### Step 3: Launch QGIS from a Pre-configured Terminal
+
+This is the most important step. We will open a terminal, temporarily tell it where to find our portable Java, and then launch QGIS from that same session.
+
+---
+
+#### **For Windows Users**
+
+1.  **Open a Command Prompt.** Go to the Start Menu and type `cmd`.
+2.  **Navigate to your workshop folder.** Use the `cd` command.
+    ```batch
+    cd C:\Users\YourUser\FOSS4G_Workshop
+    ```
+3.  **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created. It is only active for this specific command prompt window.
+    ```batch
+    set "JAVA_HOME=%cd%\jdk\jdk-21.0.2+13"
+    ```
+4.  **Launch QGIS from the same command prompt.** (You may need to adjust the path if your QGIS is installed elsewhere).
+    ```batch
+    start "" "C:\Program Files\QGIS 3.34.8\bin\qgis-bin.exe"
+    ```
+
+---
+
+#### **For macOS and Linux Users**
+
+1.  **Open a new Terminal.**
+2.  **Navigate to your workshop folder.** Use the `cd` command.
+    ```bash
+    cd /home/user/foss4g_workshop
+    ```
+3.  **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created and is only active for this terminal session. Note the folder name inside may vary slightly.
+    ```bash
+    export JAVA_HOME="$PWD/jdk/temurin-21.jdk/Contents/Home"
+    ```
+4.  **Launch QGIS from the same terminal.**
+    * **macOS**:
+        ```bash
+        open /Applications/QGIS.app
+        ```
+    * **Linux**:
+        ```bash
+        qgis
+        ```
+
+---
+
+## 💡 Workshop Steps: Interactive Analysis
+
+After completing the setup, launch QGIS from your configured terminal and open the Python Console (**Plugins -> Python Console**). You will now run each of the following code blocks one by one.
+
+### Step 1: Set Up the Environment
+
+This step identifies your workshop folder and tells Python where to find your scripts.
+
+```python
+# --- Step 1: Set up the Environment ---
+print("--- Step 1: Setting up environment ---")
+from pathlib import Path
+import sys
+
+# Path.cwd() works here because we launched QGIS from the workshop directory
+project_root = Path.cwd()
+
+# This is a good practice check to ensure the path is correct
+if not (project_root / 'scripts').exists():
+    raise FileNotFoundError(f"Could not find the 'scripts' subfolder. Is the project root correct? Path: {project_root}")
+
+# Add the scripts folder to Python's path
+scripts_path = project_root / 'scripts'
+if str(scripts_path) not in sys.path:
+    sys.path.append(str(scripts_path))
+
+print(f"Environment is ready. Project root set to: {project_root}")
+```
+
+### Step 2: Import Necessary Functions
+(This step remains the same)
+```python
+# --- Step 2: Import Necessary Functions ---
+print("\n--- Step 2: Importing tools ---")
+import geopandas as gpd
+from single_core_ttm import single_core_ttm
+from workshop_utils import active_layer_to_gdf, add_gdf_to_qgis
+print("Tools imported.")
+```
+
+### Step 3: Load Origin and Destination Layers
+(This step remains the same)
+```python
+# --- Step 3.1: Load Origin Layer ---
+print("\n--- Step 3: Loading data ---")
+print("ACTION: Add data to QGIS, then select the ORIGINS layer and run this.")
+origins = active_layer_to_gdf()
+
+# --- Step 3.2: Load Destination Layer ---
+print("\nACTION: Now select the DESTINATIONS layer and run this.")
+destinations = active_layer_to_gdf()
+```
+
+### Step 4: Run the Travel Time Analysis
+(This step and all subsequent steps remain the same)
+```python
+# --- Step 4: Run the Travel Time Analysis ---
+print("\n--- Step 4: Calculating travel times (this may take a moment)... ---")
+travel_time_df = single_core_ttm(origins, destinations)
+print("Analysis complete! The result is a table of all possible journey times.")
+print("Result preview:")
+print(travel_time_df.head())
+```
+
+### Step 5: Find the Quickest Route to Each Destination
+
+We are only interested in the *fastest* route to each unique destination.
+
+```python
+# --- Step 5: Find the Quickest Route to Each Destination ---
+print("\n--- Step 5: Filtering for the quickest route to each destination ---")
+shortest_tt = travel_time_df.sort_values("travel_time").drop_duplicates("to_id")
+print("Filtering complete.")
+print("Result preview:")
+print(shortest_tt.head())
+```
+
+### Step 6: Join Results Back to Destination Geometries
+
+Let's join our results back to the original destination points so we can visualize them.
+
+```python
+# --- Step 6: Join Results Back to Destination Geometries ---
+print("\n--- Step 6: Joining travel times back to the destination layer ---")
+results_gdf = destinations.merge(
+    shortest_tt[["travel_time", "to_id"]],
+    left_on="id",
+    right_on="to_id",
+    how="left"
+).drop(columns=["to_id"])
+print("Join complete.")
+```
+
+### Step 7: Add the Final Layer to QGIS
+
+This code will add our results as a new layer in your QGIS project.
+
+```python
+# --- Step 7: Add the Final Layer to QGIS ---
+print("\n--- Step 7: Adding results to the QGIS map ---")
+add_gdf_to_qgis(results_gdf, "outbound_accessibility_results")
+print("\nWorkshop complete! A new layer has been added to your project.")
+```
+
+---
+
+## 🗺️ Exploring Further
+
+Congratulations! You can now use QGIS's styling tools to symbolize the `outbound_accessibility_results` layer based on the `travel_time` attribute to create a powerful accessibility map.
