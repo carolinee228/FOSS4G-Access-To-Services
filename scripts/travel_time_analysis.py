@@ -21,10 +21,8 @@ def build_transport_network(project_root):
     gtfs_folder = data_path / 'gtfs'
     
     gtfs_paths = [
-        gtfs_folder / 'NW_bus_clipped.zip',
-        gtfs_folder / 'SW_bus_clipped.zip',
-        gtfs_folder / 'W_bus_clipped.zip',
-        gtfs_folder / 'WM_bus_clipped.zip',
+        gtfs_folder / 'bus_gtfs_cardiff.zip',
+        gtfs_folder / 'train_gtfs_cardiff.zip',
     ]
 
     transport_network = r5py.TransportNetwork(
