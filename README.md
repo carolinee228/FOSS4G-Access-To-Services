@@ -251,22 +251,28 @@ print(f"Found {len(reachable_destinations)} reachable destinations to use as new
 # The original origins are now the destinations.
 inbound_tt_df = get_travel_time_matrix(transport_network, reachable_destinations, origins)
 
-# Process the inbound results
+# For each residential property (to_id), find the quickest return journey
 shortest_inbound_tt = inbound_tt_df.sort_values("travel_time").drop_duplicates("to_id")
-shortest_inbound_tt = shortest_inbound_tt.rename(columns={"travel_time": "inbound_travel_time", "to_id": "origin_id"})
 
-# Join the inbound results back to the original origins layer
+# Rename columns for clarity before merging
+shortest_inbound_tt = shortest_inbound_tt.rename(columns={
+    "travel_time": "inbound_time",
+    "from_id": "inbound_from_gp_id",
+    "to_id": "origin_id"
+})
+
+# Merge the quickest return journey time back to the original origins layer
 inbound_results_gdf = origins.merge(
-    shortest_inbound_tt[["inbound_travel_time", "origin_id"]],
+    shortest_inbound_tt[["inbound_time", "inbound_from_gp_id", "origin_id"]],
     left_on="id",
     right_on="origin_id",
     how="left"
 )
 
-# Handle unreachable return journeys
-inbound_results_gdf['inbound_travel_time'] = inbound_results_gdf['inbound_travel_time'].fillna(90)
+# Handle cases where no return journey was found
+inbound_results_gdf['inbound_time'] = inbound_results_gdf['inbound_time'].fillna(90)
 
-# Add the results to QGIS
+# Add the results to QGIS. This layer will have a point for every residential property.
 add_gdf_to_qgis(inbound_results_gdf, "inbound_accessibility_results")
 
 print("\n--- Inbound Analysis Complete ---")
@@ -291,8 +297,16 @@ from travel_time_analysis import get_detailed_itinerary_by_id
 start_id = 0
 end_id = 0
 
-get_detailed_itinerary_by_id(transport_network, origins, destinations, start_id, end_id)
+# This function now returns a GeoDataFrame of the route segments
+detailed_route_gdf = get_detailed_itinerary_by_id(transport_network, origins, destinations, start_id, end_id)
+
+# Add the route to the map if it was found
+if detailed_route_gdf is not None and not detailed_route_gdf.empty:
+    add_gdf_to_qgis(detailed_route_gdf, f"route_{start_id}_to_{end_id}")
+    print(f"Added detailed route from {start_id} to {end_id} to the map.")
 ```
+
+---
 
 ## 🏛️ Project Context and Methodology
 
