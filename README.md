@@ -10,8 +10,8 @@ Welcome! This workshop will guide you through performing a public transport acce
 
 Before you begin, you must have the following software:
 
-1.  **QGIS (version 3.28 or newer)**: If you do not have it, download it from [qgis.org](https://qgis.org/en/site/forusers/download.html).
-2.  **This GitHub Repository**: You need all the data and script files.
+1. **QGIS (version 3.28 or newer)**: If you do not have it, download it from [qgis.org](https://qgis.org/en/site/forusers/download.html).
+2. **This GitHub Repository**: You need all the data and script files.
 
 ---
 
@@ -27,11 +27,11 @@ If you haven't already, download this repository as a ZIP file and extract it to
 
 Our analysis library (`r5py`) requires a portable, 64-bit version of JDK 21.
 
-1.  Go to the download page: [**Eclipse Temurin JDK 21 Downloads**](https://adoptium.net/temurin/releases/?version=21)
-2.  On the download page, find your Operating System (Windows, macOS, Linux).
-3.  Crucially, download the **Archive** file, which will be a `.zip` or `.tar.gz`. **Do NOT download the installer (`.msi` or `.pkg`).** 
-4.  Create a new folder named `jdk` inside your main workshop folder.
-5.  Extract the contents of the downloaded archive into this new `jdk` folder.
+1. Go to the download page: [**Eclipse Temurin JDK 21 Downloads**](https://adoptium.net/temurin/releases/?version=21)
+2. On the download page, find your Operating System (Windows, macOS, Linux).
+3. Crucially, download the **Archive** file, which will be a `.zip` or `.tar.gz`. **Do NOT download the installer (`.msi` or `.pkg`).**
+4. Create a new folder named `jdk` inside your main workshop folder.
+5. Extract the contents of the downloaded archive into this new `jdk` folder.
 
 ### Step 3: Configure Environment and Launch QGIS
 
@@ -43,20 +43,27 @@ This is the final setup step. We will open a terminal, install the necessary Pyt
 
 For Windows, we will perform all the remaining setup steps in a single terminal window.
 
-1.  From the Start Menu, find and open the **"OSGeo4W Shell"**.
-2.  **Install Python Packages:** In the terminal window that opens, run the following command to install the required libraries into QGIS's Python environment.
+1. From the Start Menu, find and open the **"OSGeo4W Shell"**.
+2. **Install Python Packages:** In the terminal window that opens, run the following command to install the required libraries into QGIS's Python environment.
+
     ```batch
     python-qgis-ltr -m pip install r5py geopandas JPype1==1.5.0 "numpy<2"
     ```
-3.  **Navigate to your workshop folder.** After the installation completes, use the `cd` command.
+
+3. **Navigate to your workshop folder.** After the installation completes, use the `cd` command.
+
     ```batch
     cd C:\Users\YourUser\FOSS4G_Workshop
     ```
-4.  **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created. It is only active for this specific terminal window. **Note: The version number in the path below might be slightly different for you.**
+
+4. **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created. It is only active for this specific terminal window. **Note: The version number in the path below might be slightly different for you.**
+
     ```batch
     set "JAVA_HOME=%cd%\jdk\jdk-21.0.2+13"
     ```
-5.  **Launch QGIS.** **Note: You may need to adjust the path below to match your QGIS installation version.**
+
+5. **Launch QGIS.** **Note: You may need to adjust the path below to match your QGIS installation version.**
+
     ```batch
     qgis-ltr travel_time_workshop.qgz
     ```
@@ -67,25 +74,30 @@ For Windows, we will perform all the remaining setup steps in a single terminal 
 
 For macOS and Linux, the setup is a two-stage process.
 
-1.  **Install Python Packages:** Open a new standard **Terminal** and run the following command. `pip3` is typically linked to the Python installation that QGIS uses.
+1. **Install Python Packages:** Open a new standard **Terminal** and run the following command. `pip3` is typically linked to the Python installation that QGIS uses.
+
     ```bash
     pip3 install r5py geopandas JPype1==1.5.0 "numpy<2"
     ```
-2.  **Configure and Launch:** After the installation is complete, close that terminal. Now, open a **new Terminal** for the analysis session and run the following commands.
+
+2. **Configure and Launch:** After the installation is complete, close that terminal. Now, open a **new Terminal** for the analysis session and run the following commands.
     * First, navigate to your workshop folder:
+
         ```bash
         cd /home/user/foss4g_workshop
         ```
+
     * Next, set the temporary `JAVA_HOME` variable. **Note: The exact folder name inside `jdk/` may vary slightly.**
+
         ```bash
         export JAVA_HOME="$PWD/jdk/temurin-21.jdk/Contents/Home"
         ```
+
     * Finally, launch QGIS from the same terminal:
         * **macOS**: `open /Applications/QGIS.app travel_time_workshop.qgz`
         * **Linux**: `qgis travel_time_workshop.qgz`
 
 ---
-
 
 ## 💡 Workshop Steps: Interactive Analysis
 
@@ -136,17 +148,17 @@ print("Transport network built successfully.")
 
 ### Step 4: Load Origin and Destination Layers
 
-1.  **Load Data**: Add the `clipped_residential_properties.gpkg` and `clipped_gpmainsites.gpkg` files to QGIS.
-2.  **Select Origins**: Select the `clipped_gpmainsites` layer in the Layers Panel.
-3.  **Run Code**:
+1. **Load Data**: Add the `clipped_residential_properties.gpkg` and `clipped_gpmainsites.gpkg` files to QGIS.
+2. **Select Origins**: Select the `clipped_gpmainsites` layer in the Layers Panel.
+3. **Run Code**:
 
 ```python
 # --- Step 4.1: Load Origin Layer ---
 origins = active_layer_to_gdf()
 ```
 
-4.  **Select Destinations**: Select the `clipped_residential_properties` layer in the Layers Panel.
-5.  **Run Code**:
+4. **Select Destinations**: Select the `clipped_residential_properties` layer in the Layers Panel.
+5. **Run Code**:
 
 ```python
 # --- Step 4.2: Load Destination Layer ---
@@ -201,6 +213,7 @@ print("Unreachable destinations handled.")
 add_gdf_to_qgis(results_gdf, "outbound_accessibility_results")
 print("\nWorkshop complete! A new layer has been added to your project.")
 ```
+
 The `travel_time_results.qml` file can be used to quickly apply a style to the results layer.
 
 ---
@@ -213,11 +226,11 @@ For those who finish early, here are some extra tasks to explore more capabiliti
 
 The core of the analysis happens in the `get_travel_time_matrix` function.
 
-1.  In the QGIS Browser panel, navigate to your project folder, then into the `scripts` subfolder.
-2.  Drag the `travel_time_analysis.py` file into the QGIS Python Editor window.
-3.  Try changing some of the parameters inside the `r5py.TravelTimeMatrix` call (e.g., `max_time`, `departure_time`, `speed_walking`). For full details on the parameters available, see the [r5py docs](https://r5py.readthedocs.io/stable/reference/reference.html#r5py.TravelTimeMatrix)
-4.  Click the "Run Script" button in the editor to save the changes to memory.
-5.  Now, re-run Step 5 from the main workshop guide above to see how your results change.
+1. In the QGIS Browser panel, navigate to your project folder, then into the `scripts` subfolder.
+2. Drag the `travel_time_analysis.py` file into the QGIS Python Editor window.
+3. Try changing some of the parameters inside the `r5py.TravelTimeMatrix` call (e.g., `max_time`, `departure_time`, `speed_walking`). For full details on the parameters available, see the [r5py docs](https://r5py.readthedocs.io/stable/reference/reference.html#r5py.TravelTimeMatrix)
+4. Click the "Run Script" button in the editor to save the changes to memory.
+5. Now, re-run Step 5 from the main workshop guide above to see how your results change.
 
 ### Task 2: Calculate Inbound Journeys
 
@@ -264,11 +277,11 @@ print("A new 'inbound_accessibility_results' layer has been added.")
 
 Let's find the specific turn-by-turn route between one origin and one destination using the results we just generated.
 
-1.  Open the attribute table for the **`outbound_accessibility_results`** layer in QGIS.
-2.  Find an interesting row (one with a `travel_time` less than 90). Note down the value from the **`from_id`** column (this is your origin) and the **`id`** column (this is your destination).
-3.  Copy the code below into the QGIS editor.
-4.  **Replace the placeholder `0` values** with the `from_id` and `id` numbers you found.
-5.  Run the script.
+1. Open the attribute table for the **`outbound_accessibility_results`** layer in QGIS.
+2. Find an interesting row (one with a `travel_time` less than 90). Note down the value from the **`from_id`** column (this is your origin) and the **`id`** column (this is your destination).
+3. Copy the code below into the QGIS editor.
+4. **Replace the placeholder `0` values** with the `from_id` and `id` numbers you found.
+5. Run the script.
 
 ```python
 # --- Task 3: Run Detailed Itinerary ---
@@ -280,3 +293,9 @@ end_id = 0
 
 get_detailed_itinerary_by_id(transport_network, origins, destinations, start_id, end_id)
 ```
+
+## 🏛️ Project Context and Methodology
+
+For those interested in the real-world application of this workshop, we have prepared a separate document detailing the data sources and the methodology used to scale this analysis up for a national project.
+
+[**Read more about the Data Sources and Production Methodology here.**](CONTEXT.md)
