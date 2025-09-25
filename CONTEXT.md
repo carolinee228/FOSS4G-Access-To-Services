@@ -8,10 +8,10 @@ This document provides additional context on the data sources used for this work
 
 The datasets used in this workshop are clipped subsets of larger, national datasets. Here is a summary of the original sources and processing steps:
 
-- **GP Surgeries (Destinations):** The destination points for GP practices were downloaded from **DataMapWales**.
+- **GP Surgeries (Outbound Origins):** The destination points for GP practices were downloaded from **DataMapWales**.
   - Link: [https://datamap.gov.wales/layergroups/geonode:gp_sites_ogl](https://datamap.gov.wales/layergroups/geonode:gp_sites_ogl)
 
-- **Residential Properties (Origins):** The origin points were derived from Ordnance Survey **NGD Built Address** layer, filtered to residential properties. To make the analysis computationally feasible, the ~1.5 million individual properties were consolidated into ~140,000 network-snapped cluster points. Each cluster represents properties no more than 75 metres (approximately a one-minute walk) from each other along the transport network. This dramatically speeds up analysis while maintaining a high level of geographic accuracy.
+- **Residential Properties (Outbound Destinations):** The origin points were derived from Ordnance Survey **NGD Built Address** layer, filtered to residential properties. To make the analysis computationally feasible, the ~1.5 million individual properties were consolidated into ~140,000 network-snapped cluster points. Each cluster represents properties no more than 75 metres (approximately a one-minute walk) from each other along the transport network. This dramatically speeds up analysis while maintaining a high level of geographic accuracy.
   - Link: [https://docs.os.uk/osngd/data-structure/address/gb-address/built-address)
 
 - **Bus Timetable Data (GTFS):** Timetable data for bus services was downloaded in the standard GTFS format from the UK Government's **Bus Open Data Service (BODS)**.
