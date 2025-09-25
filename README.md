@@ -149,8 +149,8 @@ print("Transport network built successfully.")
 
 ### Step 4: Load Origin and Destination Layers
 
-1. **Load Data**: Add the `clipped_residential_properties.gpkg` and `clipped_gpmainsites.gpkg` files to QGIS.
-2. **Select Origins**: Select the `clipped_gpmainsites` layer in the Layers Panel.
+1. **Load Data**: Check that the `clipped_residential_properties.gpkg` and `clipped_gpmainsites.gpkg` files are present in the Table of Contents in QGIS. If not, add these manually from the package.
+2. **Select Origins**: Select the `clipped_gpmainsites` layer in the Layers Panel. Make sure the layer is clicked/highlighted in the Table of Contents.
 3. **Run Code**:
 
 ```python
@@ -158,7 +158,7 @@ print("Transport network built successfully.")
 origins = active_layer_to_gdf()
 ```
 
-4. **Select Destinations**: Select the `clipped_residential_properties` layer in the Layers Panel.
+4. **Select Destinations**: Select the `clipped_residential_properties` layer in the Layers Panel. Make sure this other layer is clicked/highlighted in the Table of Contents and the Origins are no longer clicked/highlighted. 
 5. **Run Code**:
 
 ```python
