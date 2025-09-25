@@ -60,7 +60,7 @@ For Windows, we will perform all the remaining setup steps in a single terminal 
 4. **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created. It is only active for this specific terminal window. **Note: The version number in the path below might be slightly different for you.**
 
     ```batch
-    set "JAVA_HOME=%cd%\jdk\jdk-21.0.2+13"
+    set "JAVA_HOME=%cd%\jdk\jdk-21.0.8+9"
     ```
 
 5. **Launch QGIS.** **Note: You may need to adjust the path below to match your QGIS installation version.**
