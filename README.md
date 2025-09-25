@@ -15,7 +15,7 @@ Before you begin, you must have the following software:
 
 ---
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 This setup ensures QGIS can find the correct Java version and Python packages **without requiring admin rights or permanently changing your system settings**.
 
@@ -29,7 +29,8 @@ Our analysis library (`r5py`) requires a portable, 64-bit version of JDK 21.
 
 1. Go to the download page: [**Eclipse Temurin JDK 21 Downloads**](https://adoptium.net/temurin/releases/?version=21)
 2. On the download page, find your Operating System (Windows, macOS, Linux).
-3. Crucially, download the **Archive** file, which will be a `.zip` or `.tar.gz`. **Do NOT download the installer (`.msi` or `.pkg`).**
+3. Crucially, download the **Archive** file, which will be a `.zip` or `.tar.gz`. **Do NOT download the installer (`.msi` or `.pkg`).** For example, the Windows installer is found here: <img width="2267" height="1336" alt="image" src="https://github.com/user-attachments/assets/d8108635-4dcb-4de0-b1e2-8c4561c3d63f" />
+
 4. Create a new folder named `jdk` inside your main workshop folder.
 5. Extract the contents of the downloaded archive into this new `jdk` folder.
 
@@ -99,7 +100,7 @@ For macOS and Linux, the setup is a two-stage process.
 
 ---
 
-## 💡 Workshop Steps: Interactive Analysis
+## Workshop Steps: Interactive Analysis
 
 After completing the setup, launch QGIS from your configured terminal and open the Python Console (**Plugins -> Python Console**). The best way to run the following code blocks is to click the **Show editor** button, paste the code into the editor panel, then click the **Run Script** button for each step.
 
@@ -214,11 +215,11 @@ add_gdf_to_qgis(results_gdf, "outbound_accessibility_results")
 print("\nWorkshop complete! A new layer has been added to your project.")
 ```
 
-The `travel_time_results.qml` file can be used to quickly apply a style to the results layer.
+The `travel_time_results.qml` file can be used to quickly apply a style to the results layer. The travel_time_results.qml file can be used to quickly apply a style to the results layer. To apply this, right click on the outbound_accessibility_results layer > Properties > Symbology > Style > Load Style > File > Add file > Add the `travel_time_results.qml file` > Load
 
 ---
 
-## 🗺️ Exploring Further (Optional Tasks)
+## Exploring Further (Optional Tasks)
 
 For those who finish early, here are some extra tasks to explore more capabilities of `r5py`.
 
