@@ -37,13 +37,14 @@ The methodology demonstrated in this workshop was successfully scaled up to perf
 
 ### Key Methodological Points:
 
-- **Realistic Travel Times:** The `departure_time_window` parameter in `r5py` was crucial. By setting a window of one or two hours, we could calculate trips departing every minute within that window. The analysis then returned the **50th percentile (median)** travel time. This provides a much more realistic and robust measure of accessibility than a single, best-case journey time.
+- **Realistic Travel Times:**
+    1. The `departure_time_window` parameter instructs `r5py` to calculate trips departing every minute within that window. We used the **50th percentile (median)** travel time, to provide a more robust measure of accessibility compared to the shortest journey time.
+    2. Departure time and departure time window parameters were configured differently for each service to match real-world behaviour.
+    3. To make the analysis more realistic and avoid scenarios where individuals would need to walk for excessively long periods without public transport alternatives, a maximum walking time of 20 minutes was set. This means that any single walking segment cannot exceed 20 minutes. If no public transport option is available and the required walking leg is longer than 20 minutes, the route is marked as unreachable.
 
 - **Computational Efficiency:** The "outbound-first" approach was key to making the analysis manageable.
     1. First, the **outbound** leg (from a relatively small number of origins to all ~140k destinations) was calculated, which is computationally fast.
     2. Then, only the destinations that were **reachable** within the 90-minute cutoff were used as the origins for the **inbound** leg.
-    3. This reduced the number of calculations needed for the return journey, significantly cutting down on total analysis time.
+    3. Combined with the residential property clustering, this dramatically reduced the number of calculations needed for the return journey, significantly cutting down on total analysis time.
 
 - **Scaling with Multiprocessing:** To run the analysis at a national scale, Python's `multiprocessing` library was used to divide the list of origins among 32 parallel processes on a high-performance machine. This allowed a complete round-trip analysis for a single service type to be completed in approximately **40 minutes**.
-
--  **Max Walk Time:** To make the analysis more realistic and avoid scenarios where individuals would need to walk for excessively long periods without public transport alternatives, a maximum walking time of 20 minutes was set. This means that any single walking segment cannot exceed 20 minutes. If no public transport option is available and the required walking leg is longer than 20 minutes, the route is marked as unreachable.
