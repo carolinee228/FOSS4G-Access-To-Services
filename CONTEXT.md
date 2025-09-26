@@ -45,3 +45,5 @@ The methodology demonstrated in this workshop was successfully scaled up to perf
     3. This reduced the number of calculations needed for the return journey, significantly cutting down on total analysis time.
 
 - **Scaling with Multiprocessing:** To run the analysis at a national scale, Python's `multiprocessing` library was used to divide the list of origins among 32 parallel processes on a high-performance machine. This allowed a complete round-trip analysis for a single service type to be completed in approximately **40 minutes**.
+
+-  **Max Walk Time:** To make the analysis more realistic and avoid scenarios where individuals would need to walk for excessively long periods without public transport alternatives, a maximum walking time of 20 minutes was set. This means that any single walking segment cannot exceed 20 minutes. If no public transport option is available and the required walking leg is longer than 20 minutes, the route is marked as unreachable.

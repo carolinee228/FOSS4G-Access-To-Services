@@ -8,10 +8,11 @@ Welcome! This workshop will guide you through performing a public transport acce
 
 ## Prerequisites
 
+If possible, please complete these steps before attending the workshop.
 Before you begin, you must have the following software:
 
 1. **QGIS (version 3.28 or newer)**: If you do not have it, download it from [qgis.org](https://qgis.org/en/site/forusers/download.html).
-2. **This GitHub Repository**: You need all the data and script files.
+2. **This GitHub Repository**: You need all the data and script files. Either clone or download the repo as a zip (and extract)
 
 ---
 
@@ -51,7 +52,7 @@ For Windows, we will perform all the remaining setup steps in a single terminal 
     python-qgis-ltr -m pip install r5py geopandas JPype1==1.5.0 "numpy<2"
     ```
 
-3. **Navigate to your workshop folder.** After the installation completes, use the `cd` command.
+3. **Navigate to your workshop folder.** After the installation completes, use the `cd` command. **Note: The exact folder name may differ slightly - may need to update to /foss4g-access-to-services**
 
     ```batch
     cd C:\Users\YourUser\FOSS4G_Workshop
@@ -82,7 +83,7 @@ For macOS and Linux, the setup is a two-stage process.
     ```
 
 2. **Configure and Launch:** After the installation is complete, close that terminal. Now, open a **new Terminal** for the analysis session and run the following commands.
-    * First, navigate to your workshop folder:
+    * First, navigate to your workshop folder: **Note: The exact folder name may differ slightly - may need to update to /foss4g-access-to-services**
 
         ```bash
         cd /home/user/foss4g_workshop
