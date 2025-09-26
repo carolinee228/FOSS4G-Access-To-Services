@@ -8,6 +8,7 @@ Welcome! This workshop will guide you through performing a public transport acce
 
 ## Prerequisites
 
+If possible, please complete these steps before attending the workshop.
 Before you begin, you must have the following software:
 
 1. **QGIS (version 3.28 or newer)**: If you do not have it, download it from [qgis.org](https://qgis.org/en/site/forusers/download.html).
