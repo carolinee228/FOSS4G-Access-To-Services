@@ -81,11 +81,9 @@ Open a Terminal window and run the following commands.
 
 1. **Install Python Packages.**
 
-    ```bash
-    pip3 install r5py geopandas JPype1==1.5.0 "numpy<2"
-    ```
-
-    * **Note for macOS users:** The first time you run this, your Mac may prompt you to install the "Xcode Command Line Developer Tools". Please accept this; it is a one-time setup that is required for installing many Python packages. The installation may take a few minutes. After it completes, re-run the `pip3 install...` command above.
+    * **macOS**:`/Applications/QGIS.app/Contents/MacOS/bin/python3 -m pip install r5py geopandas JPype1==1.5.0 "numpy<2"`
+    * **Linux**: `python3-qgis -m pip install r5py geopandas JPype1==1.5.0 "numpy<2"`
+    * **Note for macOS users:** The first time you run this, your Mac may prompt you to install the "Xcode Command Line Developer Tools". Please accept this; it is a one-time setup that is required for installing many Python packages. The installation may take a few minutes. After it completes, re-run the `pip install...` command above.
 
 2. **Navigate to your workshop folder.**
 
