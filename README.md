@@ -244,34 +244,37 @@ Run the following code block in the QGIS Python Editor.
 print("\n--- Starting Inbound Analysis ---")
 
 # First, find which destinations were reachable from our outbound analysis
-reachable_destinations = results_gdf[results_gdf['travel_time'] < 90]
-print(f"Found {len(reachable_destinations)} reachable destinations to use as new origins.")
+inbound_origins = results_gdf[results_gdf['travel_time'] < 90]
+print(f"Found {len(inbound_origins)} reachable destinations to use as inbound origins.")
+
+# Copy original origins as inbound_destinations, to avoid confusion
+inbound_destinations = origins.copy()
 
 # Now, calculate inbound travel times, swapping origins and destinations
 # The reachable destinations are now the origins.
 # The original origins are now the destinations.
-inbound_tt_df = get_travel_time_matrix(transport_network, reachable_destinations, origins)
+inbound_tt_df = get_travel_time_matrix(transport_network, inbound_origins, inbound_destinations)
 
-# For each residential property (to_id), find the quickest return journey
-shortest_inbound_tt = inbound_tt_df.sort_values("travel_time").drop_duplicates("to_id")
+# For each residential property (from_id), find the quickest journey
+shortest_inbound_tt = inbound_tt_df.sort_values("travel_time").drop_duplicates("from_id")
 
 # Rename columns for clarity before merging
 shortest_inbound_tt = shortest_inbound_tt.rename(columns={
-    "travel_time": "inbound_time",
-    "from_id": "inbound_from_gp_id",
-    "to_id": "origin_id"
+    "travel_time": "inbound_travel_time",
+    "from_id": "inbound_from_id",
+    "to_id": "inbound_to_id"
 })
 
 # Merge the quickest return journey time back to the original origins layer
-inbound_results_gdf = origins.merge(
-    shortest_inbound_tt[["inbound_time", "inbound_from_gp_id", "origin_id"]],
+inbound_results_gdf = inbound_origins.merge(
+    shortest_inbound_tt[["inbound_travel_time", "inbound_from_id", "inbound_to_id"]],
     left_on="id",
-    right_on="origin_id",
+    right_on="inbound_from_id",
     how="left"
-)
+).drop(columns=["id", "from_id"])
 
 # Handle cases where no return journey was found
-inbound_results_gdf['inbound_time'] = inbound_results_gdf['inbound_time'].fillna(90)
+inbound_results_gdf['inbound_travel_time'] = inbound_results_gdf['inbound_travel_time'].fillna(90)
 
 # Add the results to QGIS. This layer will have a point for every residential property.
 add_gdf_to_qgis(inbound_results_gdf, "inbound_accessibility_results")
