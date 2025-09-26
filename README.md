@@ -74,30 +74,33 @@ For Windows, we will perform all the remaining setup steps in a single terminal 
 
 #### **For macOS and Linux Users**
 
-For macOS and Linux, the setup is a two-stage process.
+Open a Terminal window and run the following commands.
 
-1. **Install Python Packages:** Open a new standard **Terminal** and run the following command. `pip3` is typically linked to the Python installation that QGIS uses.
+1. **Install Python Packages.**
 
     ```bash
     pip3 install r5py geopandas JPype1==1.5.0 "numpy<2"
     ```
 
-2. **Configure and Launch:** After the installation is complete, close that terminal. Now, open a **new Terminal** for the analysis session and run the following commands.
-    * First, navigate to your workshop folder: **Note: The exact folder name may differ slightly - may need to update to /foss4g-access-to-services**
+    * **Note for macOS users:** The first time you run this, your Mac may prompt you to install the "Xcode Command Line Developer Tools". Please accept this; it is a one-time setup that is required for installing many Python packages. The installation may take a few minutes. After it completes, re-run the `pip3 install...` command above.
 
-        ```bash
-        cd /home/user/foss4g_workshop
-        ```
+2. **Navigate to your workshop folder.** **Note:** The exact folder name may vary slightly.
 
-    * Next, set the temporary `JAVA_HOME` variable. **Note: The exact folder name inside `jdk/` may vary slightly.**
+    ```bash
+    cd /home/user/foss4g_workshop
+    ```
 
-        ```bash
-        export JAVA_HOME="$PWD/jdk/temurin-21.jdk/Contents/Home"
-        ```
+3. **Set the `JAVA_HOME` variable.** **Note:** This command will not produce any output, which is normal. The exact folder name inside `jdk/` may vary slightly.
 
-    * Finally, launch QGIS from the same terminal:
-        * **macOS**: `open /Applications/QGIS.app travel_time_workshop.qgz`
-        * **Linux**: `qgis travel_time_workshop.qgz`
+    ```bash
+    export JAVA_HOME="$PWD/jdk/temurin-21.jdk/Contents/Home"
+    ```
+
+4. **Launch QGIS.**
+
+    * **macOS**: `open /Applications/QGIS.app travel_time_workshop.qgz`
+    * **Linux**: `qgis travel_time_workshop.qgz`
+    * **Note for macOS users:** The first time you open QGIS, your Mac's security settings (Gatekeeper) may block it. If this happens, go to **System Settings > Privacy & Security**, scroll down, and you will see a message about QGIS being blocked. Click the **"Open Anyway"** button.
 
 ---
 
@@ -114,7 +117,11 @@ This step identifies your workshop folder and tells Python where to find your sc
 from pathlib import Path
 import sys
 
-project_root = Path.cwd()
+# !!! IMPORTANT: YOU MUST EDIT THIS LINE !!!
+# Change the path below to the location where you extracted the workshop files.
+# Windows example: project_root = Path('C:/Users/YourUser/FOSS4G_Workshop')
+# macOS/Linux example: project_root = Path('/home/user/foss4g_workshop')
+project_root = Path('YOUR_WORKSHOP_FOLDER_PATH_HERE')
 
 if not (project_root / 'scripts').exists():
     raise FileNotFoundError(f"Could not find the 'scripts' subfolder. Did you launch QGIS from the correct directory? Current Path: {project_root}")
@@ -159,7 +166,7 @@ print("Transport network built successfully.")
 origins = active_layer_to_gdf()
 ```
 
-4. **Select Destinations**: Select the `clipped_residential_properties` layer in the Layers Panel. Make sure this other layer is clicked/highlighted in the Table of Contents and the Origins are no longer clicked/highlighted. 
+4. **Select Destinations**: Select the `clipped_residential_properties` layer in the Layers Panel. Make sure this other layer is clicked/highlighted in the Table of Contents and the Origins are no longer clicked/highlighted.
 5. **Run Code**:
 
 ```python
