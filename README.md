@@ -45,6 +45,8 @@ This is the final setup step. We will open a terminal, install the necessary Pyt
 
 For Windows, we will perform all the remaining setup steps in a single terminal window.
 
+**Note: Your folders and commands might differ slightly, update as needed based on QGIS/JDK versions and workshop directory.**
+
 1. From the Start Menu, find and open the **"OSGeo4W Shell"**.
 2. **Install Python Packages:** In the terminal window that opens, run the following command to install the required libraries into QGIS's Python environment.
 
@@ -52,19 +54,19 @@ For Windows, we will perform all the remaining setup steps in a single terminal 
     python-qgis-ltr -m pip install r5py geopandas JPype1==1.5.0 "numpy<2"
     ```
 
-3. **Navigate to your workshop folder.** After the installation completes, use the `cd` command. **Note: The exact folder name may differ slightly - may need to update to /foss4g-access-to-services**
+3. **Navigate to your workshop folder.** After the installation completes, use the `cd` command.
 
     ```batch
     cd C:\Users\YourUser\FOSS4G_Workshop
     ```
 
-4. **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created. It is only active for this specific terminal window. **Note: The version number in the path below might be slightly different for you.**
+4. **Set the `JAVA_HOME` variable.** This command points to the `jdk` folder you created. It is only active for this specific terminal window.
 
     ```batch
     set "JAVA_HOME=%cd%\jdk\jdk-21.0.8+9"
     ```
 
-5. **Launch QGIS.** **Note: You may need to adjust the path below to match your QGIS installation version.**
+5. **Launch QGIS.**
 
     ```batch
     qgis-ltr travel_time_workshop.qgz
@@ -75,6 +77,7 @@ For Windows, we will perform all the remaining setup steps in a single terminal 
 #### **For macOS and Linux Users**
 
 Open a Terminal window and run the following commands.
+**Note: Your folders and commands might differ slightly, update as needed based on QGIS/JDK versions and workshop directory.**
 
 1. **Install Python Packages.**
 
@@ -84,13 +87,13 @@ Open a Terminal window and run the following commands.
 
     * **Note for macOS users:** The first time you run this, your Mac may prompt you to install the "Xcode Command Line Developer Tools". Please accept this; it is a one-time setup that is required for installing many Python packages. The installation may take a few minutes. After it completes, re-run the `pip3 install...` command above.
 
-2. **Navigate to your workshop folder.** **Note:** The exact folder name may vary slightly.
+2. **Navigate to your workshop folder.**
 
     ```bash
     cd /home/user/foss4g_workshop
     ```
 
-3. **Set the `JAVA_HOME` variable.** **Note:** This command will not produce any output, which is normal. The exact folder name inside `jdk/` may vary slightly.
+3. **Set the `JAVA_HOME` variable.**
 
     ```bash
     export JAVA_HOME="$PWD/jdk/temurin-21.jdk/Contents/Home"
