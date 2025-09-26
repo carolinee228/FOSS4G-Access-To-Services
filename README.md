@@ -226,7 +226,7 @@ add_gdf_to_qgis(results_gdf, "outbound_accessibility_results")
 print("\nWorkshop complete! A new layer has been added to your project.")
 ```
 
-The `travel_time_results.qml` file can be used to quickly apply a style to the results layer. The travel_time_results.qml file can be used to quickly apply a style to the results layer. To apply this, right click on the outbound_accessibility_results layer > Properties > Symbology > Style > Load Style > File > Add file > Add the `travel_time_results.qml file` > Load
+The `travel_time_results.qml` file can be used to quickly apply a style to the results layer. To apply this, right click on the outbound_accessibility_results layer > Properties > Symbology > Style > Load Style > File > Add file > Add the travel_time_results.qml file > Load
 
 ---
 
