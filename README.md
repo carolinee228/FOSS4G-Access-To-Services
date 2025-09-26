@@ -258,9 +258,7 @@ print(f"Found {len(inbound_origins)} reachable destinations to use as inbound or
 # Copy original origins as inbound_destinations, to avoid confusion
 inbound_destinations = origins.copy()
 
-# Now, calculate inbound travel times, swapping origins and destinations
-# The reachable destinations are now the origins.
-# The original origins are now the destinations.
+# Now, calculate inbound travel times
 inbound_tt_df = get_travel_time_matrix(transport_network, inbound_origins, inbound_destinations)
 
 # For each residential property (from_id), find the quickest journey
