@@ -52,7 +52,7 @@ For Windows, we will perform all the remaining setup steps in a single terminal 
     python-qgis-ltr -m pip install r5py geopandas JPype1==1.5.0 "numpy<2"
     ```
 
-3. **Navigate to your workshop folder.** After the installation completes, use the `cd` command.
+3. **Navigate to your workshop folder.** After the installation completes, use the `cd` command. **Note: The exact folder name may differ slightly - may need to update to /foss4g-access-to-services**
 
     ```batch
     cd C:\Users\YourUser\FOSS4G_Workshop
