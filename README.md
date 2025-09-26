@@ -83,7 +83,7 @@ For macOS and Linux, the setup is a two-stage process.
     ```
 
 2. **Configure and Launch:** After the installation is complete, close that terminal. Now, open a **new Terminal** for the analysis session and run the following commands.
-    * First, navigate to your workshop folder:
+    * First, navigate to your workshop folder: **Note: The exact folder name may differ slightly - may need to update to /foss4g-access-to-services**
 
         ```bash
         cd /home/user/foss4g_workshop
