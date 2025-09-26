@@ -112,6 +112,7 @@ After completing the setup, launch QGIS from your configured terminal and open t
 ### Step 1: Set Up the Environment
 
 This step identifies your workshop folder and tells Python where to find your scripts.
+**Note: This step requires you to alter one line in the code, read carefully below and follow based on Windows/macOS/Linux.**
 
 ```python
 # --- Step 1: Set up the Environment ---
