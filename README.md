@@ -4,6 +4,8 @@
 
 Welcome! This workshop will guide you through performing a public transport accessibility analysis using Python inside QGIS. We will calculate the travel time from a set of origins to a set of destinations using open-source tools and data.
 
+DISCLAIMER: This project is provided "as is", without warranty of any kind. Use of this code is at your own risk. The authors and contributors assume no responsibility for any issues, damages, or losses that may arise from using, modifying, or distributing this software. By using this code, you agree that you are solely responsible for ensuring it is suitable for your purposes, and you accept all risks associated with its use.
+
 ---
 
 ## Prerequisites
