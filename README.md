@@ -50,7 +50,7 @@ For Windows, we will perform all the remaining setup steps in a single terminal 
 **Note: Your folders and commands might differ slightly, update as needed based on QGIS/JDK versions and workshop directory.**
 
 1. From the Start Menu, find and open the **"OSGeo4W Shell"**.
-2. **Install Python Packages:** In the terminal window that opens, run the following command to install the required libraries into QGIS's Python environment.
+2. **Install Python Packages:** In the terminal window that opens, run the following command to install the required libraries into QGIS's Python environment. **Note: If you didn't install the -ltr version of QGIS, omit -ltr from the following command**
 
     ```batch
     python-qgis-ltr -m pip install r5py geopandas JPype1==1.5.0 "numpy<2"
@@ -68,7 +68,7 @@ For Windows, we will perform all the remaining setup steps in a single terminal 
     set "JAVA_HOME=%cd%\jdk\jdk-21.0.8+9"
     ```
 
-5. **Launch QGIS.**
+5. **Launch QGIS. Note: If you didn't install the -ltr version of QGIS, omit -ltr from the following command**
 
     ```batch
     qgis-ltr travel_time_workshop.qgz
@@ -239,11 +239,11 @@ For those who finish early, here are some extra tasks to explore more capabiliti
 
 The core of the analysis happens in the `get_travel_time_matrix` function.
 
-1. In the QGIS Browser panel, navigate to your project folder, then into the `scripts` subfolder.
-2. Drag the `travel_time_analysis.py` file into the QGIS Python Editor window.
+1. In the Python Editor, navigate to the 'Open Scripts' button and navigate to your project folder, then into the `scripts` subfolder.
+2. Double click on the `travel_time_analysis.py` file to open it in the QGIS Python Editor window.
 3. Try changing some of the parameters inside the `r5py.TravelTimeMatrix` call (e.g., `max_time`, `departure_time`, `speed_walking`). For full details on the parameters available, see the [r5py docs](https://r5py.readthedocs.io/stable/reference/reference.html#r5py.TravelTimeMatrix)
 4. Click the "Run Script" button in the editor to save the changes to memory.
-5. Now, re-run Step 5 from the main workshop guide above to see how your results change.
+5. Now, re-run Step 5 **and onwards** from the main workshop guide above to see how your results change. **Note - you need to run all steps from step 5 onwards here, including adding the styling again once a new layer appears on the map**
 
 ### Task 2: Calculate Inbound Journeys
 
