@@ -39,7 +39,7 @@ Our analysis library (`r5py`) requires a portable, 64-bit version of JDK 21.
 
 ### Step 3: Configure Environment and Launch QGIS
 
-This is the final setup step. We will open a terminal, install the necessary Python packages, temporarily tell the terminal where to find our portable Java, and then launch QGIS from that same session.
+This is the final setup step. We will open a terminal, install the necessary Python packages, temporarily tell the terminal where to find our portable Java JDK, and then launch QGIS from that same session.
 
 ---
 
