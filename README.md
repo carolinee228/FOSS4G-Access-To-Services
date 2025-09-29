@@ -90,7 +90,7 @@ Open a Terminal window and run the following commands.
 2. **Navigate to your workshop folder.**
 
     ```bash
-    cd /home/user/foss4g_access-to-services
+    cd /home/user/foss4g-access-to-services
     ```
 
 3. **Set the `JAVA_HOME` variable.**
