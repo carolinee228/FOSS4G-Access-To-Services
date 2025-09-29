@@ -11,7 +11,7 @@ DISCLAIMER: This project is provided "as is", without warranty of any kind. Use 
 ## Prerequisites
 
 If possible, please complete these steps before attending the workshop.
-Before you begin, you must have the following software:
+Before you begin, you must have the following software (downloaded and installed):
 
 1. **QGIS (version 3.28 or newer)**: If you do not have it, download it from [qgis.org](https://qgis.org/en/site/forusers/download.html).
 2. **This GitHub Repository**: You need all the data and script files. Either clone or download the repo as a zip (and extract)
