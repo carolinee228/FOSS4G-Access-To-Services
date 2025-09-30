@@ -27,70 +27,51 @@ def active_layer_to_gdf():
 
 def add_gdf_to_qgis(gdf, layer_name="results"):
     """
-    Takes a GeoDataFrame, creates a QGIS memory layer from it,
-    and adds it to the current QGIS project.
+    Takes a GeoDataFrame, cleans complex data types, saves it to a temporary
+    GeoPackage, and adds it as a new layer to the current QGIS project.
     """
     if not isinstance(gdf, gpd.GeoDataFrame):
         raise TypeError("Input must be a GeoDataFrame.")
 
-    print(f"Adding GeoDataFrame as a new layer named '{layer_name}'...")
-
-    # Determine geometry type from the GeoDataFrame
-    geom_type = gdf.geom_type.unique()[0]
-    qgis_geom_type = 'Unknown'
-    if 'Point' in geom_type:
-        qgis_geom_type = 'Point'
-    elif 'Line' in geom_type:
-        qgis_geom_type = 'LineString'
-    elif 'Polygon' in geom_type:
-        qgis_geom_type = 'Polygon'
+    print(f"Preparing and adding GeoDataFrame as a new layer named '{layer_name}'...")
     
-    crs_string = gdf.crs.to_string()
-    uri = f"{qgis_geom_type}?crs={crs_string}"
-    
-    # Create the memory layer with a defined geometry and CRS
-    temp_layer = QgsVectorLayer(uri, layer_name, "memory")
-    provider = temp_layer.dataProvider()
+    # Create a cleaned copy to avoid modifying the original DataFrame
+    gdf_to_save = gdf.copy()
 
-    # Add attribute fields from the GeoDataFrame, mapping types to QGIS types
-    fields_to_add = []
-    dtype_map = {
-        'int64': QVariant.Int,
-        'float64': QVariant.Double,
-        'object': QVariant.String,
-        'bool': QVariant.Bool
-    }
-    for col_name, dtype in gdf.drop(columns=['geometry']).dtypes.items():
-        variant_type = dtype_map.get(dtype.name, QVariant.String) # Default to String
-        fields_to_add.append(QgsField(col_name, variant_type))
-    
-    provider.addAttributes(fields_to_add)
-    temp_layer.updateFields()
+    for col in gdf_to_save.columns:
+        # Don't touch the geometry column
+        if col == gdf_to_save.geometry.name:
+            continue
+            
+        # Convert timedelta objects to minutes (float)
+        if pd.api.types.is_timedelta64_ns_dtype(gdf_to_save[col]):
+            gdf_to_save[col] = gdf_to_save[col].dt.total_seconds() / 60
+            
+        # Convert any other problematic 'object' types (like r5py enums) to strings
+        elif gdf_to_save[col].dtype == 'object':
+             gdf_to_save[col] = gdf_to_save[col].astype(str)
 
-    # Add features to the layer
-    features = []
-    for _, row in gdf.iterrows():
-        feature = QgsFeature()
-        # Ensure geometry is valid before creating the QGIS geometry object
-        if row.geometry and not row.geometry.is_empty:
-            geom = QgsGeometry.fromWkt(row.geometry.wkt)
-            feature.setGeometry(geom)
+    # Define a path for the temporary GeoPackage in the project's root directory
+    project_root = Path.cwd()
+    temp_gpkg_path = str(project_root / f"{layer_name}.gpkg")
+
+    try:
+        # Save the cleaned GeoDataFrame to the GeoPackage file
+        gdf_to_save.to_file(temp_gpkg_path, driver='GPKG', layer=layer_name)
+    except Exception as e:
+        print(f"ERROR during file save operation: {e}")
+        return None
+
+    # Add the newly created GeoPackage layer to the QGIS interface
+    added_layer = iface.addVectorLayer(temp_gpkg_path, layer_name, "ogr")
+
+    if not added_layer or not added_layer.isValid():
+        print(f"Error: QGIS could not add the layer from {temp_gpkg_path}")
+        return None
         
-        # Set attributes, converting any pandas NaN/NaT to None for QGIS
-        attributes = []
-        for col_name in gdf.drop(columns=['geometry']).columns:
-            value = row[col_name]
-            if pd.isna(value):
-                attributes.append(None)
-            else:
-                attributes.append(value)
-        feature.setAttributes(attributes)
-        features.append(feature)
-        
-    provider.addFeatures(features)
-    temp_layer.updateFields()
+    if added_layer.featureCount() == 0:
+        print(f"WARNING: Layer was added to QGIS but contains 0 features. Check for data type issues in the source GeoDataFrame.")
+    else:
+        print(f"SUCCESS: Layer added to QGIS with {added_layer.featureCount()} features.")
 
-    # Add layer to the project
-    QgsProject.instance().addMapLayer(temp_layer)
-    print(f"Layer '{layer_name}' added successfully.")
-    return temp_layer
+    return added_layer
