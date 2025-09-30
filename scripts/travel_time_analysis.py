@@ -70,18 +70,31 @@ def get_travel_time_matrix(transport_network, origins, destinations):
 
 def get_detailed_itinerary_by_id(transport_network, origins_gdf, destinations_gdf, origin_id, destination_id):
     """
-    Calculates and prints a detailed itinerary for a specific
+    Calculates and returns a GeoDataFrame of route segments for a specific
     origin ID and destination ID.
     """
+    import datetime as dt
+    import r5py
+
     departure_time = dt.datetime(2025, 9, 9, 12, 0, 0)
     
     # Select the specific origin and destination by their ID
-    origin_point = origins_gdf[origins_gdf['id'] == origin_id].to_crs("EPSG:4326")
-    destination_point = destinations_gdf[destinations_gdf['id'] == destination_id].to_crs("EPSG:4326")
+    origin_point_raw = origins_gdf[origins_gdf['id'] == origin_id]
+    destination_point_raw = destinations_gdf[destinations_gdf['id'] == destination_id]
 
-    if origin_point.empty or destination_point.empty:
+    if origin_point_raw.empty or destination_point_raw.empty:
         print(f"Error: Could not find features with Origin ID {origin_id} or Destination ID {destination_id}.")
-        return
+        return None
+
+    # Clean the geometries to ensure they are Points (using centroid)
+    origin_point = origin_point_raw.copy()
+    origin_point['geometry'] = origin_point.geometry.centroid
+    destination_point = destination_point_raw.copy()
+    destination_point['geometry'] = destination_point.geometry.centroid
+
+    # Reproject to WGS84 for r5py
+    origin_point = origin_point.to_crs("EPSG:4326")
+    destination_point = destination_point.to_crs("EPSG:4326")
 
     print(f"\n--- Calculating Detailed Itinerary ---")
     print(f"From origin ID: {origin_id} to destination ID: {destination_id}")
@@ -98,27 +111,11 @@ def get_detailed_itinerary_by_id(transport_network, origins_gdf, destinations_gd
 
     if detailed_itineraries.empty:
         print("No route found within the given parameters.")
-        return
+        return None
 
-    # Print the details of the first option
-    first_option = detailed_itineraries.iloc[0]
-    print(f"\nRoute Option 1 ({first_option['total_time'].total_seconds() / 60:.1f} minutes):")
+    # Filter for the first travel option (option 0)
+    first_option_segments = detailed_itineraries[detailed_itineraries['option'] == 0].copy()
     
-    segments = first_option['segments']
-    for i, segment in enumerate(segments):
-        mode = segment['mode']
-        duration = segment['duration'].total_seconds() / 60
-        distance = segment['distance']
-        
-        print(f"  Segment {i+1}: {mode.name}")
-        print(f"    - Duration: {duration:.1f} minutes")
-        print(f"    - Distance: {distance:.1f} meters")
-
-        if 'wait_time' in segment:
-            wait_time = segment['wait_time'].total_seconds() / 60
-            print(f"    - Wait time: {wait_time:.1f} minutes")
-        
-        if 'route_short_name' in segment and segment['route_short_name']:
-            print(f"    - Route: {segment['route_short_name']}")
-            
-    print("--------------------------------------")
+    print(f"Route found with {len(first_option_segments)} segments.")
+    
+    return first_option_segments
