@@ -125,6 +125,12 @@ elif sys.platform.startswith("linux"): # Linux
 if not jvm_path or not jvm_path.exists():
     raise FileNotFoundError(f"Could not find the JVM library file at {jvm_path}. Please check the JDK folder.")
 
+# --- Classpath Configuration (The Missing Piece) ---
+# Find the r5py jar file that was installed with pip
+r5py_path = Path(r5py.__file__).parent
+jar_file = next(r5py_path.glob('*.jar'))
+print(f"Found r5py jar at: {jar_file}")
+
 # Start the JVM if it's not already running
 if not jpype.isJVMStarted():
     print(f"Starting JVM from: {jvm_path}")
