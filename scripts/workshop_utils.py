@@ -3,6 +3,7 @@ from qgis.core import QgsVectorLayer, QgsProject, QgsFeature, QgsGeometry, QgsFi
 from qgis.utils import iface
 from PyQt5.QtCore import QVariant
 import pandas as pd
+from pathlib import Path
 
 def active_layer_to_gdf():
     """
